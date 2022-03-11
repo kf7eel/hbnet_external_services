@@ -13,9 +13,9 @@ import requests
 ###############################################################################################
 # Shortcut of APP. This is what users will have to type into radio, keep to about 5 characters.
 # Shortcut must be unique on each server, please check to make sure that shortcut is not already in use.
-app_shortcut = 'MYWX'
+app_shortcut = 'YOURWX'
 # URL where users can go to find out about this APP
-app_url = 'https://github.com/kf7eel/hbnet_external_services/wiki/Official-Community-Applications#wx---weather-service'
+app_url = 'https://tinyurl.com/hbnetwxsrv'
 # Brief description about APP
 app_description = 'Get current conditions for a city.'
 # Contact email, so someone can contact you if there is a problem
@@ -110,8 +110,14 @@ def mqtt_main(broker_url = 'localhost', broker_port = 1883):
     def on_message(client, userdata, message):
         topic_list = str(message.topic).split('/')
         print("Message Recieved: " + message.payload.decode())
-        # Pass message payload into our function to process message.
-        process_message(message.payload.decode())
+        # Filter out MQTT server announcements
+        if message.topic == 'ANNOUNCE/MQTT':
+            print('--------------------------------\nServer message:\n')
+            print(message.payload.decode())
+            print('\n--------------------------------')
+        else:
+            # Pass message payload into our function to process message.
+            process_message(message.payload.decode())
         
     def mqtt_connect():
         # Pass MQTT server details to instrance
@@ -132,6 +138,9 @@ def mqtt_main(broker_url = 'localhost', broker_port = 1883):
     # Subscribe to topic for incoming messages. See https://github.com/kf7eel/hbnet_external_services/wiki for topic structure.
     mqtt_client.subscribe('APP/' + app_shortcut, qos=0)
 
+        # Subscribe to topic for announcements from MQTT server operator.
+    mqtt_client.subscribe('ANNOUNCE/MQTT', qos=0)
+
     # Announcements for service/network discovery. Function that runs on a 5 minute loop.
     mqtt_client.loop_start()
 
@@ -145,15 +154,15 @@ def mqtt_announce():
 
 def mqtt_announce_loop(ann_time):
     while True:
-        ann_time = ann_time * 60
         time.sleep(ann_time)
         mqtt_announce()
+        print('Sending announcement')
         
 
 if __name__ == '__main__':
     
     # Start ANNOUNCE thread
-    mqtt_thread = threading.Thread(target=mqtt_announce_loop, args=(5,))
+    mqtt_thread = threading.Thread(target=mqtt_announce_loop, args=(120,))
     mqtt_thread.daemon = True
     mqtt_thread.start()
  

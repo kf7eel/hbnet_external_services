@@ -18,13 +18,13 @@ import os, ast
 # Shortcut of APP. This is what users will have to type into radio, keep to about 5 characters.
 # Shortcut must be unique on each server, please check to make sure that shortcut is not already in use.
 
-app_shortcut = 'INFO'
+app_shortcut = 'MYINFO'
 # URL where users can go to find out about this APP
 app_url = 'http://example.org'
 # Brief description about APP
 app_description = 'INFO will respond with information. :)'
 # Contact email, so someone can contact you if there is a problem
-app_contact = 'kf7eel@qsl.net'
+app_contact = your@email.address'
 
 # MQTT server details. Only data gateways connected to the same MQTT server will be able to use this wonderful script.
 mqtt_server = 'mqtt.hbnet.xyz'
@@ -76,8 +76,13 @@ def mqtt_main(broker_url = 'localhost', broker_port = 1883):
     def on_message(client, userdata, message):
         topic_list = str(message.topic).split('/')
         print("Message Recieved: " + message.payload.decode())
-        # Pass message payload into our function to process message.
-        process_message(message.payload.decode())
+        if message.topic == 'ANNOUNCE/MQTT':
+            print('--------------------------------\nServer message:\n')
+            print(message.payload.decode())
+            print('\n--------------------------------')
+        else:
+            # Pass message payload into our function to process message.
+            process_message(message.payload.decode())
 
     def mqtt_connect():
         # Pass MQTT server details to instrance
