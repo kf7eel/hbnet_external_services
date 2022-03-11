@@ -4,4 +4,6 @@ This repository contains examples of various external services that can be used 
 
 These external services interface with the data gateway via MQTT. There are numerous MQTT libraries in different programming languages available. The intent of external services is to make it easy for other people to write useful applications.
 
-More info coming soon...
+## See the [Wiki](https://github.com/kf7eel/hbnet_external_services/wiki) for more.
+
+Even more info coming soon...
