@@ -1,0 +1,24 @@
+# Shortcut of APP. This is what users will have to type into radio, keep to about 5 characters.
+# Shortcut must be unique on each server, please check to make sure that shortcut is not already in use.
+app_shortcut = 'EMAIL'
+# URL where users can go to find out about this APP
+app_url = 'http://example.org'
+# Brief description about APP
+app_description = 'This is a cool radio project'
+# Contact email, so someone can contact you if there is a problem
+app_contact = 'your@email.address'
+
+# MQTT server details. Only data gateways connected to the same MQTT server will be able to use this wonderful script.
+mqtt_server = 'mqtt.hbnet.xyz'
+mqtt_port = 1883
+mqtt_user = ''
+mqtt_password = ''
+
+imap_server = 'imap.some.server'
+imap_user = 'user@email.address'
+imap_password = 'password'
+
+smtp_server = 'smtp.server.arredss'
+smtp_port = 587
+smtp_username = 'username'
+smtp_password = 'password'
